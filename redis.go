@@ -32,7 +32,7 @@ type RedisError string
 
 func (err RedisError) Error() string { return "Redis Error: " + string(err) }
 
-var doesNotExist = RedisError("Key does not exist ")
+var ErrNil = RedisError("Key does not exist ")
 
 // reads a bulk reply (i.e $5\r\nhello)
 func readBulk(reader *bufio.Reader, head string) ([]byte, error) {
@@ -55,7 +55,7 @@ func readBulk(reader *bufio.Reader, head string) ([]byte, error) {
 			return nil, err
 		}
 		if size == -1 {
-			return nil, doesNotExist
+			return nil, ErrNil
 		}
 		lr := io.LimitReader(reader, int64(size))
 		data, err = ioutil.ReadAll(lr)
@@ -130,7 +130,7 @@ func readResponse(reader *bufio.Reader) (interface{}, error) {
 		res := make([][]byte, size)
 		for i := 0; i < size; i++ {
 			res[i], err = readBulk(reader, "")
-			if err == doesNotExist {
+			if err == ErrNil {
 				continue
 			}
 			if err != nil {
