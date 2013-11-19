@@ -484,7 +484,7 @@ func (client *Client) Set(key string, val []byte) error {
 func (client *Client) Get(key string) ([]byte, error) {
 	res, _ := client.sendCommand("GET", key)
 	if res == nil {
-		return nil, RedisError("Key `" + key + "` does not exist")
+		return nil, ErrNil
 	}
 
 	data := res.([]byte)
@@ -617,7 +617,7 @@ func (client *Client) Substr(key string, start int, end int) ([]byte, error) {
 	res, _ := client.sendCommand("SUBSTR", key, strconv.Itoa(start), strconv.Itoa(end))
 
 	if res == nil {
-		return nil, RedisError("Key `" + key + "` does not exist")
+		return nil, ErrNil 
 	}
 
 	data := res.([]byte)
@@ -1293,7 +1293,7 @@ func (client *Client) Hgetall(key string, val interface{}) error {
 
 	data := res.([][]byte)
 	if data == nil || len(data) == 0 {
-		return RedisError("Key `" + key + "` does not exist")
+		return ErrNil 
 	}
 	err = writeToContainer(data, reflect.ValueOf(val))
 	if err != nil {
