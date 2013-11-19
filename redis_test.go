@@ -535,6 +535,12 @@ func TestSortedSet(t *testing.T) {
 		}
 	}
 	for i := 0; i <= 4; i++ {
+		count, _ := client.Zcount("zs", 0, float64(i))
+		if count != i+1 {
+			t.Fatal("zcount failed")
+		}
+	}
+	for i := 0; i <= 4; i++ {
 		data, _ := client.Zrangebyscore("zs", 0, float64(i))
 		if !reflect.DeepEqual(data, vals[0:i+1]) {
 			t.Fatal("zrangebyscore failed")

@@ -2,21 +2,18 @@
 
 redis.go is a client for the [redis](http://github.com/antirez/redis) key-value store. 
 
-Some features include:
+This library inherits from [hoisie/redis](https://github.com/hoisie/redis)
 
-* Designed for Redis 2.6.x. 
-* Support for all redis types - strings, lists, sets, sorted sets, and hashes
-* Very simple usage
-* Connection pooling ( with configurable size )
-* Support for concurrent access
-* Manages connections to the redis server, including dropped and timed out connections
-* Marshaling/Unmarshaling go types to hashes
+Add some features:
+
+* Support ZCOUNT, ZRANGE and ZREVRANGE with socres
+* Export ErrNil for not existing key error
 
 This library is stable and is used in production environments. However, some commands have not been tested as thoroughly as others. If you find any bugs please file an issue!
 
 # Installation
 
-Just run `go get github.com/hoisie/redis`
+Just run `go get github.com/ianzeng/redis`
 
 ## Examples
 
@@ -28,7 +25,7 @@ Most of the examples connect to a redis database running in the default port -- 
 ```go
 package main
 
-import "github.com/hoisie/redis"
+import "github.com/ianzeng/redis"
 
 func main() {
     var client redis.Client

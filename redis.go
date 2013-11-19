@@ -617,7 +617,7 @@ func (client *Client) Substr(key string, start int, end int) ([]byte, error) {
 	res, _ := client.sendCommand("SUBSTR", key, strconv.Itoa(start), strconv.Itoa(end))
 
 	if res == nil {
-		return nil, ErrNil 
+		return nil, ErrNil
 	}
 
 	data := res.([]byte)
@@ -1003,6 +1003,15 @@ func (client *Client) Zcard(key string) (int, error) {
 	return int(res.(int64)), nil
 }
 
+func (client *Client) Zcount(key string, start float64, end float64) (int, error) {
+	res, err := client.sendCommand("ZCOUNT", key, strconv.FormatFloat(start, 'f', -1, 64), strconv.FormatFloat(end, 'f', -1, 64))
+	if err != nil {
+		return -1, err
+	}
+
+	return int(res.(int64)), nil
+}
+
 func (client *Client) Zscore(key string, member []byte) (float64, error) {
 	res, err := client.sendCommand("ZSCORE", key, string(member))
 	if err != nil {
@@ -1293,7 +1302,7 @@ func (client *Client) Hgetall(key string, val interface{}) error {
 
 	data := res.([][]byte)
 	if data == nil || len(data) == 0 {
-		return ErrNil 
+		return ErrNil
 	}
 	err = writeToContainer(data, reflect.ValueOf(val))
 	if err != nil {
